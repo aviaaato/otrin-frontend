@@ -1,8 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import 'jquery/dist/jquery.min';
+import 'popper.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import './assets/js/wow';
 import './index.css';
+import './assets/css/fontawesome.css';
+import './assets/css/animated.css';
+//import './assets/js/animation';
+import './assets/js/imagesloaded';
+import './assets/js/custom';
+
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
