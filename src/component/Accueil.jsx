@@ -1,74 +1,34 @@
 import React, { Component } from "react";
 import 'leaflet';
 import Resultat from "./Resultat";
-//import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
+
 
 const fetchGet = async (url) => {
   const requete = await fetch(url);
   return await requete.json();
 };
 
-/*const MyMap = () => {
-  return (
-    <React.Fragment>
-      <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-      </MapContainer>
-    </React.Fragment>
-  );
-};
-
-const Products = ({ products }) => {
-  return (
-    <div>
-      {products.map((p, index) => (
-        <div key={index}>
-          <div>
-            <img
-              src={p.image}
-              alt=""
-              style={{ width: "100px", height: "100px" }}
-            />
-          </div>
-          {p.name}
-          <br />
-          {p.category}
-          <br />
-          {p.moderator}
-          <br />
-        </div>
-      ))}
-    </div>
-  );
-};*/
-
 export default class Accueil extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      products: [],
+      prices: [],
       search_value: "",
       categories: [],
       current_categorie: 0,
-      products_filtered: [],
+      prices_filtered: [],
     };
   }
 
   handleCategorie = (e) => {
     e.preventDefault();
     this.setState({ current_categorie: e.target.value });
-    this.filter_product(e.target.value);
+    this.filter_product(e.target.value, this.state.search_value);
   };
 
   handleChange = (e) => {
     e.preventDefault();
     this.setState({ search_value: e.target.value });
-    if (e.target.value !== "") {
-      e.target.style.border = "1px solid black";
-    }
   };
 
   fetchCategorie = () => {
@@ -80,10 +40,10 @@ export default class Accueil extends Component {
     });
   };
 
-  fetchProduct = () => {
-    const products = fetchGet("http://tbgracy.pythonanywhere.com/products/");
-    products.then((_products) => {
-      this.setState({ products: _products });
+  fetchPrices = () => {
+    const products = fetchGet("http://tbgracy.pythonanywhere.com/prices/");
+    products.then((_prices) => {
+      this.setState((state, props) =>({ prices: _prices, prices_filtered: _prices }));
     });
   };
 
@@ -91,19 +51,21 @@ export default class Accueil extends Component {
     let ps = [];
 
     cat !== "0"
-      ? this.state.products.forEach((p) => {
-          if (p.category === parseInt(cat)) {
+      ? this.state.prices.forEach((p) => {
+          if (p.product.category.id === parseInt(cat)) {
             ps.push(p);
           }
         })
-      : (ps = this.state.products);
+      : (ps = this.state.prices);
 
     if (search_val !== null) {
-      const res = ps.filter((p) => p.includes(search_val));
-      console.log(res);
+      const res = ps.filter(p => p.product.name.toLowerCase().includes(search_val.toLowerCase()));
+      ps = res;
     }
-    this.setState({ products_filtered: ps });
+
+    this.setState({ prices_filtered: ps });
   };
+
   handleSearch = (e) => {
     e.preventDefault();
     if (this.state.search_value !== "") {
@@ -111,15 +73,12 @@ export default class Accueil extends Component {
         this.state.current_categorie,
         this.state.search_value
       );
-    } else {
-      const txtfield = document.querySelector("#recherche");
-      txtfield.style.border = "1px solid red";
     }
   };
 
   componentDidMount() {
     this.fetchCategorie();
-    this.fetchProduct();
+    this.fetchPrices();
   }
 
   render() {
@@ -197,7 +156,7 @@ export default class Accueil extends Component {
             </div>
           </div>
         </div>
-        <Resultat />
+        <Resultat prices_filtered={this.state.prices_filtered}/>
       </React.Fragment>
     );
   }

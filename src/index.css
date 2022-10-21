@@ -907,6 +907,11 @@ form#contact button:hover {
   color: #fff;
 }
 
+.left-image {
+  width: 120px;
+  height: 120px;
+}
+
 /*
 ---------------------------------------------
 Footer
