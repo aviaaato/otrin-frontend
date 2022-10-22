@@ -4,7 +4,7 @@ import MyMap from "./MyMap";
 import Products from "./Products";
 
 
-const Resultat = ({products_list, coordonnees}) => {
+const Resultat = ({products_list, coordonnees, new_requete}) => {
 
   const [prices_filtered, setPricesFiltered] = useState([]);
 
@@ -27,6 +27,7 @@ const Resultat = ({products_list, coordonnees}) => {
                           products_list={products_list} 
                           prices_filtered={prices_filtered}
                           setPricesFiltered={setPricesFiltered}
+                          new_requete={new_requete}
                           />
                       </div>
                   </div>

@@ -13,13 +13,17 @@ export default class Accueil extends Component {
       products_list: [],
       products_filtered: [],
       location_autorized: false,
-      coordonnees: {}
+      coordonnees: {},
+      new_requete: false
     };
   }
 
   handleCategorie = (e) => {
     e.preventDefault();
-    this.setState({ current_categorie: e.target.value });
+    this.setState((state, props) => ({
+      current_categorie: e.target.value, 
+      new_requete: true}
+    ));
     this.filter_products(e.target.value, this.state.search_value);
     document.querySelector("#norm").scrollIntoView();
   };
@@ -50,7 +54,7 @@ export default class Accueil extends Component {
   };
 
 
-  filter_products = (cat, search_val) => {
+  filter_products = (cat, search_val=null) => {
     let ps = [];
 
     if(cat !== "0"){
@@ -81,6 +85,7 @@ export default class Accueil extends Component {
         this.state.search_value
       );
     }
+    this.setState({new_requete: true})
     document.querySelector("#norm").scrollIntoView();
   };
 
@@ -191,7 +196,9 @@ export default class Accueil extends Component {
           </div>
         </div>
         <div id="norm"></div>
-        <Resultat products_list={this.state.products_filtered} coordonnees={this.state.coordonnees}/>
+        <Resultat products_list={this.state.products_filtered} 
+                coordonnees={this.state.coordonnees}
+                new_requete={this.state.new_requete}/>
       </React.Fragment>
     );
   }

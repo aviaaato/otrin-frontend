@@ -15,7 +15,7 @@ const calculate_total_page = (total_items, items_per_page) => {
     return total;
 }
 
-const Products = ({ products_list, prices_filtered, setPricesFiltered }) => {
+const Products = ({ products_list, prices_filtered, setPricesFiltered, new_requete }) => {
 
     const items_per_page = 4;
 
@@ -32,6 +32,9 @@ const Products = ({ products_list, prices_filtered, setPricesFiltered }) => {
     }
 
     useEffect(() => {
+        if(new_requete === true){
+          setCurrentPage(1);
+        }
         $('.page-link').attr('href', '#result');
         let number_of_page = calculate_total_page(products_list.length, items_per_page);
         setTotalPage(number_of_page);
@@ -49,7 +52,7 @@ const Products = ({ products_list, prices_filtered, setPricesFiltered }) => {
               paginateProduct(items_per_page, products_list, page);
             }
         });
-    }, [current_page, products_list]);
+    }, [current_page, products_list, new_requete]);
 
     const filterPrices = (id) => {
       const product_prices = fetchGet("https://tbgracy.pythonanywhere.com/products/"+id.toString()+"/prices/");
