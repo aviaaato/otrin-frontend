@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import "leaflet";
 import Resultat from "./Resultat";
-
-const fetchGet = async (url) => {
-  const requete = await fetch(url);
-  return await requete.json();
-};
+import fetchGet from "../utils/utils";
 
 export default class Accueil extends Component {
   constructor(props) {

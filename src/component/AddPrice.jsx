@@ -1,6 +1,34 @@
 import React, { Component } from "react";
+import fetchGet from "../utils/utils";
 
 export default class AddPrice extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      categories: [],
+      current_categorie: "0"
+    }
+  }
+
+  fetchCategorie = () => {
+    const categories = fetchGet(
+      "https://tbgracy.pythonanywhere.com/categories/"
+    );
+    categories.then((_categories) => {
+      this.setState({ categories: _categories });
+    });
+  };
+
+
+  componentDidMount(){
+    this.fetchCategorie();
+  }
+
+  handleCategoryChange = () => {
+
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -49,13 +77,13 @@ export default class AddPrice extends Component {
                                 className="form-select"
                                 aria-label="Area"
                                 id="chooseCategory"
-                                defaultValue={"Tous les catégories"}
-                                onChange={console.log('')}
+                                value={this.state.current_categorie}
+                                onChange={this.handleCategoryChange}
                               >
-                                <option>Tous les catégories</option>
-                                <option value="Modern City">Pièce</option>
-                                <option value="Modern City">Mode</option>
-                                <option value="Modern City">P.P.N</option>
+                                <option value="0">Tous les catégories</option>
+                                {this.state.categories && this.state.categories.map((cat) => (
+                                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                ))}
                               </select>
                             </fieldset>
                           </div>

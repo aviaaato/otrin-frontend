@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Paginator from "./Paginator";
 import $ from 'jquery';
 
+import fetchGet from "../utils/utils";
+
 const calculate_total_page = (total_items, items_per_page) => {
     var total;
     if (total_items % items_per_page === 0) {
@@ -12,11 +14,6 @@ const calculate_total_page = (total_items, items_per_page) => {
     }
     return total;
 }
-
-const fetchGet = async (url) => {
-  const requete = await fetch(url);
-  return await requete.json();
-};
 
 const Products = ({ products_list, prices_filtered, setPricesFiltered }) => {
 
