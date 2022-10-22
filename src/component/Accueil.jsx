@@ -34,7 +34,7 @@ export default class Accueil extends Component {
 
   fetchCategorie = () => {
     const categories = fetchGet(
-      "http://tbgracy.pythonanywhere.com/categories/"
+      "https://tbgracy.pythonanywhere.com/categories/"
     );
     categories.then((_categories) => {
       this.setState({ categories: _categories });
@@ -42,7 +42,7 @@ export default class Accueil extends Component {
   };
 
   fetchPrices = () => {
-    const products = fetchGet("http://tbgracy.pythonanywhere.com/prices/");
+    const products = fetchGet("https://tbgracy.pythonanywhere.com/prices/");
     products.then((_prices) => {
       this.setState((state, props) => ({
         prices: _prices,
