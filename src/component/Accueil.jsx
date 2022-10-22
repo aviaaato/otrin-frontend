@@ -11,18 +11,18 @@ export default class Accueil extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      prices: [],
       search_value: "",
       categories: [],
-      current_categorie: 0,
-      prices_filtered: [],
+      current_categorie: "0",
+      products_list: [],
+      products_filtered: []
     };
   }
 
   handleCategorie = (e) => {
     e.preventDefault();
     this.setState({ current_categorie: e.target.value });
-    this.filter_product(e.target.value, this.state.search_value);
+    this.filter_products(e.target.value, this.state.search_value);
     document.querySelector("#norm").scrollIntoView();
   };
 
@@ -41,50 +41,54 @@ export default class Accueil extends Component {
     });
   };
 
-  fetchPrices = () => {
-    const products = fetchGet("https://tbgracy.pythonanywhere.com/prices/");
-    products.then((_prices) => {
+  fetchProducts = () => {
+    const products = fetchGet("https://tbgracy.pythonanywhere.com/products/");
+    products.then((_products) => {
       this.setState((state, props) => ({
-        prices: _prices,
-        prices_filtered: _prices,
+        products_list: _products,
+        products_filtered: _products
       }));
     });
   };
 
-  filter_product = (cat, search_val = null) => {
+
+  filter_products = (cat, search_val) => {
     let ps = [];
 
-    cat !== "0"
-      ? this.state.prices.forEach((p) => {
-          if (p.product.category.id === parseInt(cat)) {
+    if(cat !== "0"){
+      this.state.products_list.forEach((p) => {
+          if (p.category.id === parseInt(cat)) {
             ps.push(p);
           }
-        })
-      : (ps = this.state.prices);
+        });
+    }else{
+      ps = this.state.products_list;
+    }
 
     if (search_val !== null) {
       const res = ps.filter((p) =>
-        p.product.name.toLowerCase().includes(search_val.toLowerCase())
+        p.name.toLowerCase().includes(search_val.toLowerCase())
       );
       ps = res;
     }
 
-    this.setState({ prices_filtered: ps });
+    this.setState({ products_filtered: ps });
   };
 
   handleSearch = (e) => {
     e.preventDefault();
-    if (this.state.search_value !== "") {
-      this.filter_product(
+    if (this.state.search_value) {
+      this.filter_products(
         this.state.current_categorie,
         this.state.search_value
       );
     }
+    document.querySelector("#norm").scrollIntoView();
   };
 
   componentDidMount() {
     this.fetchCategorie();
-    this.fetchPrices();
+    this.fetchProducts();
   }
 
   render() {
@@ -174,9 +178,9 @@ export default class Accueil extends Component {
               </div>
             </div>
           </div>
-          <div id="norm"></div>
         </div>
-        <Resultat prices_filtered={this.state.prices_filtered} />
+        <div id="norm"></div>
+        <Resultat products_list={this.state.products_filtered} />
       </React.Fragment>
     );
   }

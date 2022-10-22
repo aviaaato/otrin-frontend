@@ -13,7 +13,12 @@ const calculate_total_page = (total_items, items_per_page) => {
     return total;
 }
 
-const Products = ({ products }) => {
+const fetchGet = async (url) => {
+  const requete = await fetch(url);
+  return await requete.json();
+};
+
+const Products = ({ products_list, prices_filtered, setPricesFiltered }) => {
 
     const items_per_page = 4;
 
@@ -31,9 +36,9 @@ const Products = ({ products }) => {
 
     useEffect(() => {
         $('.page-link').attr('href', '#result');
-        let number_of_page = calculate_total_page(products.length, items_per_page);
+        let number_of_page = calculate_total_page(products_list.length, items_per_page);
         setTotalPage(number_of_page);
-        paginateProduct(items_per_page, products, current_page)
+        paginateProduct(items_per_page, products_list, current_page)
         setPaginationConfig({
             totalPages: number_of_page,
             currentPage: current_page,
@@ -44,30 +49,40 @@ const Products = ({ products }) => {
             onClick: function (page) {
               $('.page-link').attr('href', '#result');
               setCurrentPage(page);
-              paginateProduct(items_per_page, products, page);
+              paginateProduct(items_per_page, products_list, page);
             }
         });
-    }, [current_page, products]);
+    }, [current_page, products_list]);
+
+    const filterPrices = (id) => {
+      const product_prices = fetchGet("https://tbgracy.pythonanywhere.com/products/"+id.toString()+"/prices/");
+      product_prices.then((prices) => {
+        setPricesFiltered(prices);
+      })
+    }
 
   return (
     <React.Fragment>
       <ul className="list-group pe-3 ps-3">
         {paginatedProduct && paginatedProduct.length > 0 ? paginatedProduct.map((p, index) => (
-          <li className="list-group-item rounded-3 pt-0 pb-0 pe-3 d-flex justify-content-start mb-2 shadow" key={index}>
+          <Link to={p.id.toString()} className="list-group-item rounded-3 pt-0 pb-0 pe-3 d-flex justify-content-start mb-2 shadow list-group-item-action" 
+            key={index}
+            onClick={(e) => {
+              e.preventDefault();
+              filterPrices(p.id);
+            }}
+            >
             <div>
               <div className="left-image">
-                <Link href="#">
-                  <img src={p.product.image} alt="" />
-                </Link>
+                  <img src={p.image} alt="" />
               </div>
             </div>
             <div className="ms-3">
-              <p className="fs-6">{p.product.name}<br/>
-              {p.product.category.name}<br/>
-              {p.store.name} {p.store.adresse}<br/>
-              {p.value} Ar</p>
+              <p className="fs-6">{p.name}<br/>
+                {p.category.name}<br/>
+              </p>
             </div>
-          </li>
+          </Link>
         )) : <h3>Pas de produits trouvés!</h3>}
       </ul>
       <div className="d-flex justify-content-center">

@@ -4,7 +4,7 @@ import L from 'leaflet';
 import { MapContainer, Marker, TileLayer , Tooltip} from "react-leaflet";
 
 
-const MyMap = ({filtered_product}) => {
+const MyMap = ({filtered_prices}) => {
 
   const [markers, setMarkers] = useState([])
 
@@ -17,13 +17,13 @@ const MyMap = ({filtered_product}) => {
   let lon = 47.03499;
 
   useEffect(() => {
-    setMarkers(filtered_product);
-  }, [filtered_product])
+    setMarkers(filtered_prices.prices);
+  }, [filtered_prices])
 
 
   return (
     <React.Fragment>
-      <MapContainer center={[lat, lon]} zoom={14} scrollWheelZoom={false}>
+      <MapContainer center={[lat, lon]} zoom={13} scrollWheelZoom={false}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -42,6 +42,5 @@ const MyMap = ({filtered_product}) => {
     </React.Fragment>
   );
 }
-
 
 export default MyMap;
