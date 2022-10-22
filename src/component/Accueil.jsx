@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import 'leaflet';
+import "leaflet";
 import Resultat from "./Resultat";
-
 
 const fetchGet = async (url) => {
   const requete = await fetch(url);
@@ -24,7 +23,9 @@ export default class Accueil extends Component {
     e.preventDefault();
     this.setState({ current_categorie: e.target.value });
     this.filter_product(e.target.value, this.state.search_value);
+    document.querySelector("#norm").scrollIntoView();
   };
+
 
   handleChange = (e) => {
     e.preventDefault();
@@ -43,7 +44,10 @@ export default class Accueil extends Component {
   fetchPrices = () => {
     const products = fetchGet("http://tbgracy.pythonanywhere.com/prices/");
     products.then((_prices) => {
-      this.setState((state, props) =>({ prices: _prices, prices_filtered: _prices }));
+      this.setState((state, props) => ({
+        prices: _prices,
+        prices_filtered: _prices,
+      }));
     });
   };
 
@@ -59,7 +63,9 @@ export default class Accueil extends Component {
       : (ps = this.state.prices);
 
     if (search_val !== null) {
-      const res = ps.filter(p => p.product.name.toLowerCase().includes(search_val.toLowerCase()));
+      const res = ps.filter((p) =>
+        p.product.name.toLowerCase().includes(search_val.toLowerCase())
+      );
       ps = res;
     }
 
@@ -96,7 +102,7 @@ export default class Accueil extends Component {
                   </h6>
                 </div>
               </div>
-              <div className="col-lg-12">
+              <div className="col-lg-12" id="search-bar">
                 <form
                   id="search-form"
                   name="gs"
@@ -152,11 +158,25 @@ export default class Accueil extends Component {
                     </div>
                   </div>
                 </form>
+                <div className="d-flex justify-content-center">
+                  <div className="form-check mt-1 fs-6 text-light">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                    />
+                    <label className="form-check-label" id="check" htmlFor="flexCheckDefault">
+                      Autoriser l'accées à votre emplacement
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <div id="norm"></div>
         </div>
-        <Resultat prices_filtered={this.state.prices_filtered}/>
+        <Resultat prices_filtered={this.state.prices_filtered} />
       </React.Fragment>
     );
   }

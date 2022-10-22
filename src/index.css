@@ -912,6 +912,10 @@ form#contact button:hover {
   height: 100px;
 }
 
+.margin-to-res {
+  margin-top: 90px;
+}
+
 /*
 ---------------------------------------------
 Footer

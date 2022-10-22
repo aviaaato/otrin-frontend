@@ -1,4 +1,5 @@
 import React from "react";
+import MyMap from "./MyMap";
 
 import Products from "./Products";
 
@@ -13,7 +14,7 @@ const Resultat = ({prices_filtered}) => {
                 <div className="row">
                   <div className="col-md-8 pe-3 ps-3 pt-1 pb-1">
                     <div id="map">
-                      
+                      <MyMap filtered_product={prices_filtered}/>
                     </div>
                   </div>
                   <div className="col-md-4 ps-3 pe-3 pt-1 pb-1">

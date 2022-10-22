@@ -6,7 +6,7 @@ export default class Navbar extends Component {
     return (
       <React.Fragment>
         <header
-          className="header-area header-sticky wow slideInDown"
+          className="header-area header-sticky wow slideInDown sticky-top"
           data-wow-duration="0.75s"
           data-wow-delay="0s"
         >
