@@ -11,7 +11,9 @@ export default class Accueil extends Component {
       categories: [],
       current_categorie: "0",
       products_list: [],
-      products_filtered: []
+      products_filtered: [],
+      location_autorized: false,
+      coordonnees: {}
     };
   }
 
@@ -81,6 +83,17 @@ export default class Accueil extends Component {
     }
     document.querySelector("#norm").scrollIntoView();
   };
+
+  handleChecked = (e) => {
+    this.setState({location_autorized: !this.state.location_autorized});
+    if(e.target.checked === true){
+      navigator.geolocation.getCurrentPosition((position) => {
+        let coordinates = position.coords;
+        let obj = {lat: coordinates.latitude, lon: coordinates.longitude};
+        this.setState({coordonnees: obj})
+        });
+    }
+  }
 
   componentDidMount() {
     this.fetchCategorie();
@@ -159,15 +172,17 @@ export default class Accueil extends Component {
                   </div>
                 </form>
                 <div className="d-flex justify-content-center">
-                  <div className="form-check mt-1 fs-6 text-light">
+                  <div className="form-check mt-3 fs-6 text-light">
                     <input
                       className="form-check-input"
                       type="checkbox"
-                      value=""
+                      checked={this.state.location_autorized}
+                      onChange={this.handleChecked}
                       id="flexCheckDefault"
+                      disabled={true}
                     />
                     <label className="form-check-label" id="check" htmlFor="flexCheckDefault">
-                      Autoriser l'accées à votre emplacement
+                      Autoriser l'accées à votre emplacement (fonctionnalité à venir)
                     </label>
                   </div>
                 </div>
@@ -176,7 +191,7 @@ export default class Accueil extends Component {
           </div>
         </div>
         <div id="norm"></div>
-        <Resultat products_list={this.state.products_filtered} />
+        <Resultat products_list={this.state.products_filtered} coordonnees={this.state.coordonnees}/>
       </React.Fragment>
     );
   }

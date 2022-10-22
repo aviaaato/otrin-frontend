@@ -3,7 +3,8 @@ import MyMap from "./MyMap";
 
 import Products from "./Products";
 
-const Resultat = ({products_list}) => {
+
+const Resultat = ({products_list, coordonnees}) => {
 
   const [prices_filtered, setPricesFiltered] = useState([]);
 
@@ -17,7 +18,7 @@ const Resultat = ({products_list}) => {
                 <div className="row">
                   <div className="col-md-8 pe-3 ps-3 pt-1 pb-1">
                     <div id="map">
-                      <MyMap filtered_prices={prices_filtered}/>
+                      <MyMap filtered_prices={prices_filtered} coordonnees={coordonnees}/>
                     </div>
                   </div>
                   <div className="col-md-4 ps-3 pe-3 pt-1 pb-1">
