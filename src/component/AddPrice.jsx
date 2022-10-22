@@ -25,8 +25,9 @@ export default class AddPrice extends Component {
     this.fetchCategorie();
   }
 
-  handleCategoryChange = () => {
-
+  handleCategoryChange = (e) => {
+    e.preventDefault();
+    this.setState({ current_categorie: e.target.value });
   }
 
   render() {
