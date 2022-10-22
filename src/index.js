@@ -7,7 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import './index.css';
 import './assets/css/fontawesome.css';
 import './assets/css/animated.css';
-import './assets/js/imagesloaded';
+//import './assets/js/imagesloaded';
 import './assets/js/custom';
 
 
