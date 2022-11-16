@@ -16,6 +16,9 @@ const MyMap = ({filtered_prices, coordonnees}) => {
   })
 
   useEffect(() => {
+    /**
+     * TODO position of user
+     */
     /*if(coordonnees.lat !== undefined && coordonnees.lon !== undefined){
        setCoord({lat: coordonnees.lat, lon: coordonnees.lon});
        setIsLocated(true);
@@ -29,10 +32,13 @@ const MyMap = ({filtered_prices, coordonnees}) => {
     setMarkers(filtered_prices.prices);
   }, [filtered_prices, coordonnees])
 
-  const handleMarkerClick = (e) => {
+  /**
+   * TODO handleclik on marker
+   */
+  /*const handleMarkerClick = (e) => {
     e.preventDefault();
     console.log("click");
-  }
+  }*/
   
   return (
     <React.Fragment>
