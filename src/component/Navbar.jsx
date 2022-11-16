@@ -36,7 +36,7 @@ export default class Navbar extends Component {
                       </div>
                     </li>
                   </ul>
-                  <NavLink className="menu-trigger active">
+                  <NavLink className="menu-trigger">
                     <span>Menu</span>
                   </NavLink>
                 </nav>

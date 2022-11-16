@@ -15,6 +15,13 @@ const MyMap = ({filtered_prices, coordonnees}) => {
     iconSize: [40]
   })
 
+  /*const icon_home =L.icon({
+    iconUrl: "map-marker-home.png",
+    iconSize: [40]
+  })*/
+
+  
+
   useEffect(() => {
     /*if(coordonnees.lat !== undefined && coordonnees.lon !== undefined){
        setCoord({lat: coordonnees.lat, lon: coordonnees.lon});
@@ -24,15 +31,9 @@ const MyMap = ({filtered_prices, coordonnees}) => {
       setCoord({lat: lat, lon: lon});
       setIsLocated(false);
     }*/
-    console.log(filtered_prices.prices);
     setCoord({lat: -19.87064, lon: 47.03499});
     setMarkers(filtered_prices.prices);
   }, [filtered_prices, coordonnees])
-
-  const handleMarkerClick = (e) => {
-    e.preventDefault();
-    console.log("click");
-  }
   
   return (
     <React.Fragment>
@@ -46,13 +47,8 @@ const MyMap = ({filtered_prices, coordonnees}) => {
             <Marker key={index} 
             icon={icon}
             position={[marker.store.location.latitude, marker.store.location.longitude]}
-            /*eventHandlers={{
-              click : (e) => {
-                console.log(e);
-              },
-            }}*/
             >
-              <Tooltip direction="top" offset={[0, 0]} opacity={1}>
+              <Tooltip direction="top" offset={[0, 0]} opacity={1} permanent>
                 {marker.product.name} <b>{marker.store.name}</b>  <i className="text-center">{marker.value} Ar</i> 
               </Tooltip>
             </Marker>
