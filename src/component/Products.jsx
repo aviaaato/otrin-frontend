@@ -23,6 +23,7 @@ const Products = ({ products_list, prices_filtered, setPricesFiltered, new_reque
     const [paginatedProduct, setPaginatedProduct] = useState([]);
     const [current_page, setCurrentPage] = useState(1);
     const [total_page, setTotalPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(false); 
 
     const paginateProduct = (items_per_page, products, page) => {
       let first_index = (items_per_page*page) - items_per_page;
@@ -32,6 +33,7 @@ const Products = ({ products_list, prices_filtered, setPricesFiltered, new_reque
     }
 
     useEffect(() => {
+        setIsLoading(true);
         if(new_requete === true){
           setCurrentPage(1);
         }
@@ -52,6 +54,9 @@ const Products = ({ products_list, prices_filtered, setPricesFiltered, new_reque
               paginateProduct(items_per_page, products_list, page);
             }
         });
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000)
     }, [current_page, products_list, new_requete]);
 
     const filterPrices = (id) => {
@@ -63,31 +68,40 @@ const Products = ({ products_list, prices_filtered, setPricesFiltered, new_reque
 
   return (
     <React.Fragment>
-      <ul className="list-group pe-3 ps-3">
-        {paginatedProduct && paginatedProduct.length > 0 ? paginatedProduct.map((p, index) => (
-          <Link to={p.id.toString()} className="list-group-item rounded-3 pt-0 pb-0 pe-3 d-flex justify-content-start mb-2 shadow list-group-item-action" 
+      { isLoading ? <div className="d-flex justify-content-center">
+        <div className="spinner-grow text-dark" style={{width: "3rem", height: "3rem"}} role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p className="ms-3 mt-2 text-center text-muted">Chargement des produits ...</p>
+      </div> :
+        <>
+        <ul className="list-group pe-3 ps-3">
+          {paginatedProduct && paginatedProduct.length > 0 ? paginatedProduct.map((p, index) => (
+            <Link to={p.id.toString()} className="list-group-item rounded-3 pt-0 pb-0 pe-3 d-flex justify-content-start mb-2 shadow list-group-item-action" 
             key={index}
             onClick={(e) => {
               e.preventDefault();
-              filterPrices(p.id);
-            }}
-            >
-            <div>
-              <div className="left-image">
-                  <img src={p.image} alt="" />
+                filterPrices(p.id);
+              }}
+              >
+              <div>
+                <div className="left-image">
+                    <img src={p.image} alt="" />
+                </div>
               </div>
-            </div>
-            <div className="ms-3">
-              <p className="fs-6">{p.name}<br/>
-                {p.category.name}<br/>
-              </p>
-            </div>
-          </Link>
-        )) : <h3>Pas de produits trouvés!</h3>}
-      </ul>
-      <div className="d-flex justify-content-center">
-        <Paginator total_page={total_page} paginationConfig={paginationConfig}/>
-      </div>
+              <div className="ms-3">
+                <p className="fs-6">{p.name}<br/>
+                  {p.category.name}<br/>
+                </p>
+              </div>
+            </Link>
+          )) : <h3>Pas de produits trouvés!</h3>}
+        </ul>
+        <div className="d-flex justify-content-center">
+          <Paginator total_page={total_page} paginationConfig={paginationConfig}/>
+        </div>
+        </>
+      }
     </React.Fragment>
   );
 };

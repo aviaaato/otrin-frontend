@@ -9,6 +9,7 @@ const MyMap = ({filtered_prices, coordonnees}) => {
   const [markers, setMarkers] = useState([])
   //const [is_located, setIsLocated] = useState(false);
   const [coord, setCoord] = useState({lat: -19.87064, lon: 47.03499});
+  const [isLoading, setIsLoading] = useState(false);
 
   const icon = L.icon({
     iconUrl: "marker.png",
@@ -16,6 +17,7 @@ const MyMap = ({filtered_prices, coordonnees}) => {
   })
 
   useEffect(() => {
+    setIsLoading(true);
     /**
      * TODO position of user
      */
@@ -27,9 +29,11 @@ const MyMap = ({filtered_prices, coordonnees}) => {
       setCoord({lat: lat, lon: lon});
       setIsLocated(false);
     }*/
-    console.log(filtered_prices.prices);
     setCoord({lat: -19.87064, lon: 47.03499});
     setMarkers(filtered_prices.prices);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); 
   }, [filtered_prices, coordonnees])
 
   /**
@@ -42,6 +46,15 @@ const MyMap = ({filtered_prices, coordonnees}) => {
   
   return (
     <React.Fragment>
+      {isLoading ? <>
+        <div className="d-flex justify-content-center pt-5 mt-5 pb-5">
+          <div className="spinner-border text-primary" style={{width: "3rem", height: "3rem"}} role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        <h5 className="text-center text-muted mb-5">Chargement de la carte ...</h5>
+      </>
+      :
       <MapContainer center={[coord.lat, coord.lon]} zoom={13} scrollWheelZoom={false}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -64,6 +77,7 @@ const MyMap = ({filtered_prices, coordonnees}) => {
             </Marker>
           ))}
       </MapContainer>
+      }
     </React.Fragment>
   );
 }
