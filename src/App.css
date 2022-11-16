@@ -1,5 +1,26 @@
 .leaflet-container {
+    border-radius: 20px;
     width: 100%;
     height: 80vh;
     z-index: 0;
+}
+
+@media (max-width: 767px) {
+    .leaflet-container {
+        height: 40vh;
+    }
+
+    .product {
+        padding-top: 30px;
+    }
+
+    .main-banner {
+        padding-top: 160px;
+        padding-bottom: 80px;
+    }
+
+    #resultat {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
 }
